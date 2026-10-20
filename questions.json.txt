@@ -1,0 +1,26 @@
+[
+  {
+    "domain": "Describe Cloud Concepts",
+    "question": "What is CapEx vs OpEx?",
+    "options": ["CapEx = buy servers upfront, OpEx = pay as you go in cloud", "Both same", "CapEx is cloud", "OpEx is buying land"],
+    "answer": 0,
+    "explanation": "You move from buying (CapEx) to renting (OpEx) in cloud.",
+    "african_example": "CapEx = buying boda. OpEx = paying boda fare daily. Cloud is OpEx."
+  },
+  {
+    "domain": "Describe Azure Architecture & Services",
+    "question": "What is Azure Resource Group?",
+    "options": ["A container to manage related resources together", "A physical building", "A bill", "A Microsoft team"],
+    "answer": 0,
+    "explanation": "Resource Group lets you manage lifecycle together.",
+    "african_example": "Like family compound - all houses inside one fence."
+  },
+  {
+    "domain": "Describe Azure Management & Governance",
+    "question": "What is Azure Policy used for?",
+    "options": ["Enforce rules like only allow South Africa North region", "To chat", "To watch movies", "To write letters"],
+    "answer": 0,
+    "explanation": "Policy ensures compliance, deny wrong locations.",
+    "african_example": "Like LC1 rules - no building in swamp."
+  }
+]

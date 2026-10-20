@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AZ-900 Hub - Abdul Wahabu Akim</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:system-ui;max-width:700px;margin:auto;padding:12px;background:#f6f8ff}
+.badge{background:#fef3c7;padding:6px;border-radius:10px;font-size:11px;font-weight:bold}
+.card{background:white;padding:16px;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tab{padding:8px 12px;border-radius:20px;border:1px solid #ccc;background:white;cursor:pointer;margin:2px}
+.tab.active{background:#4f46e5;color:white}
+button{padding:10px;border-radius:8px;border:1px solid #ddd;background:white}
+.btn{background:#4f46e5;color:white;width:100%;font-weight:bold}
+.opt{width:100%;text-align:left;margin:5px 0}
+.correct{background:#d1fae5} .wrong{background:#fee2e2}
+.chat{background:#eef2ff;padding:8px;border-radius:8px;margin:4px 0}
+input,select{width:100%;padding:8px;margin:4px 0;border-radius:6px;border:1px solid #ccc;box-sizing:border-box}
+</style>
+</head>
+<body>
+<div class="card">
+<span class="badge">UNOFFICIAL - Based on public AZ-900 outline, NOT real exam</span>
+<h2 style="color:#4f46e5">AZ-900 Vibe Hub - Arua</h2>
+<p><b>Abdul Wahabu Akim</b> | Muni University | #1MillionDevs</p>
+</div>
+
+<div>
+<button class="tab active" onclick="show(0)">I. Quiz</button>
+<button class="tab" onclick="show(1)">II. Flashcards</button>
+<button class="tab" onclick="show(2)">III. Planner</button>
+<button class="tab" onclick="show(3)">IV. AI Buddy</button>
+<button class="tab" onclick="show(4)">V. Tracker</button>
+</div>
+
+<div id="p0" class="card">
+<h3>I. Quiz - Instant Feedback</h3>
+<select id="filter" onchange="filterD()"><option value="All">All Domains</option><option>Describe Cloud Concepts</option><option>Describe Azure Architecture & Services</option><option>Describe Azure Management & Governance</option></select>
+<h4 id="q"></h4><div id="opts"></div><p id="exp" class="chat" style="display:none"></p><button id="nxt" class="btn" style="display:none" onclick="nextQ()">Next</button>
+</div>
+
+<div id="p1" class="card" style="display:none"><h3>II. Flashcard Coach</h3><div id="fc" style="border:2px dashed #ccc;height:120px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="flip()">Click</div><p><button onclick="nextF()">Next Card</button></p></div>
+
+<div id="p2" class="card" style="display:none"><h3>III. Study Planner</h3>Exam Date: <input type="date" id="ed"> Hours/day: <input type="number" id="hr" value="2"><br>Weak: <label><input type="checkbox" value="Cloud Concepts" checked> Cloud Concepts</label> <label><input type="checkbox" value="Pricing"> Pricing</label><br><button class="btn" onclick="makePlan()">Generate 14-Day Plan</button><div id="plan"></div></div>
+
+<div id="p3" class="card" style="display:none"><h3>IV. AI Buddy - African Examples</h3><div id="cb"><div class="chat"><b>Buddy:</b> Ask me VNet, Resource Group, CapEx</div></div><input id="ci" placeholder="Type: Explain VNet"><button class="btn" onclick="ask()">Ask</button></div>
+
+<div id="p4" class="card" style="display:none"><h3>V. Readiness Tracker</h3><p>Ready: <span id="rs">0</span>%</p><canvas id="ch"></canvas><button onclick="localStorage.clear();location.reload()">Reset</button></div>
+
+<script>
+let QS=[
+{domain:"Describe Cloud Concepts",q:"What is CapEx vs OpEx?",opts:["CapEx=buy upfront, OpEx=pay as you go","Same","CapEx is cloud","OpEx is land"],ans:0,exp:"Move from buying to renting.",afr:"CapEx=buying boda, OpEx=paying fare daily"},
+{domain:"Describe Azure Architecture & Services",q:"What is Resource Group?",opts:["Bag to manage resources together","Building","Bill","Team"],ans:0,exp:"Manage together.",afr:"Like family compound - one fence"},
+{domain:"Describe Azure Management & Governance",q:"What is Azure Policy?",opts:["Enforce rules like only SA North","Chat","Movie","Letter"],ans:0,exp:"Compliance.",afr:"LC1 rules"}
+];
+let FLASH=[{f:"Elasticity?",b:"Grows/shrinks auto. Like market stalls more when busy"},{f:"Availability Zone?",b:"Separate data centers - like 3 boreholes"}];
+let cur=0,filtered=QS,scores={},totals={},fIdx=0,flipped=false,chart=null;
+try{scores=JSON.parse(localStorage.getItem('s')||'{}');totals=JSON.parse(localStorage.getItem('t')||'{}')}catch(e){}
+function show(i){for(let j=0;j<5;j++){document.getElementById('p'+j).style.display=j===i?'block':'none'; document.querySelectorAll('.tab')[j].classList.toggle('active',j===i)} if(i===4) draw();}
+function filterD(){let v=document.getElementById('filter').value; filtered=v==='All'?QS:QS.filter(x=>x.domain===v); cur=0; renderQ();}
+function renderQ(){let q=filtered[cur]; document.getElementById('q').innerText=`[${q.domain}] ${q.q}`; let o=document.getElementById('opts');o.innerHTML=''; document.getElementById('exp').style.display='none';document.getElementById('nxt').style.display='none'; q.opts.forEach((op,i)=>{let b=document.createElement('button');b.className='opt';b.innerText=op;b.onclick=()=>check(i);o.appendChild(b)});}
+function check(i){let q=filtered[cur]; let bs=document.getElementById('opts').children; [...bs].forEach(b=>b.disabled=true); totals[q.domain]=(totals[q.domain]||0)+1; if(i===q.ans){bs[i].classList.add('correct');scores[q.domain]=(scores[q.domain]||0)+1}else{bs[i].classList.add('wrong');bs[q.ans].classList.add('correct')} document.getElementById('exp').innerHTML=`💡 ${q.exp}<br>🌍 ${q.afr}`; document.getElementById('exp').style.display='block';document.getElementById('nxt').style.display='block'; localStorage.setItem('s',JSON.stringify(scores)); localStorage.setItem('t',JSON.stringify(totals));}
+function nextQ(){cur++; if(cur<filtered.length) renderQ(); else document.getElementById('p0').innerHTML='<h3>Done! Go to Tracker</h3>';}
+function nextF(){flipped=false; document.getElementById('fc').innerText=FLASH[fIdx].f; } function flip(){let el=document.getElementById('fc'); if(!flipped){el.innerText=FLASH[fIdx].b; flipped=true}else{el.innerText=FLASH[fIdx].f; flipped=false} fIdx=(fIdx+1)%FLASH.length; if(!flipped) setTimeout(()=>{document.getElementById('fc').innerText=FLASH[fIdx].f},0)}
+function makePlan(){let d=document.getElementById('ed').value; let h=document.getElementById('hr').value; if(!d){alert('Pick date');return} let w=[...document.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value); let html='<table border=1 width=100%><tr><th>Day</th><th>Focus</th></tr>'; for(let i=1;i<=14;i++){let foc=w[i%w.length]||w[0]; if(i%7==0) foc='Mock Test'; html+=`<tr><td>Day ${i}</td><td>${foc} (${h}h)</td></tr>`} html+='</table>'; document.getElementById('plan').innerHTML=html;}
+let KB={vnet:"VNet = fenced compound for Azure resources to talk privately. Like family land.", "resource group":"Resource Group = school bag for resources.", capex:"CapEx vs OpEx: CapEx buy boda, OpEx pay fare. Cloud is OpEx.", policy:"Policy = LC1 rules, stops wrong region."};
+function ask(){let q=document.getElementById('ci').value; if(!q) return; let cb=document.getElementById('cb'); cb.innerHTML+=`<div class="chat" style="text-align:right"><b>You:</b> ${q}</div>`; let ans="Think of Azure like rental market in Arua - rent what you need. Ask VNet, Resource Group, CapEx."; q=q.toLowerCase(); for(let k in KB){if(q.includes(k)) ans=KB[k]} cb.innerHTML+=`<div class="chat"><b>Buddy (Claude.ai):</b> ${ans}</div>`; document.getElementById('ci').value='';}
+function draw(){let doms=Object.keys(totals); let perc=doms.map(d=>Math.round((scores[d]||0)/totals[d]*100)); let avg=perc.length?Math.round(perc.reduce((a,b)=>a+b,0)/perc.length):0; document.getElementById('rs').innerText=avg; let ctx=document.getElementById('ch'); if(chart) chart.destroy(); chart=new Chart(ctx,{type:'bar',data:{labels:doms.length?doms:['No data'],datasets:[{label:'%',data:perc.length?perc:[0]}]}});}
+renderQ(); document.getElementById('fc').innerText=FLASH[0].f;
+</script>
+</body>
+</html>

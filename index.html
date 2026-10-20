@@ -18,6 +18,11 @@ button{padding:10px;border-radius:8px;border:1px solid #ddd;background:white}
 .chat{background:#eef2ff;padding:8px;border-radius:8px;margin:4px 0}
 input,select{width:100%;padding:8px;margin:4px 0;border-radius:6px;border:1px solid #ccc;box-sizing:border-box}
 </style>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js');
+}
+</script>
 </head>
 <body>
 <div class="card">

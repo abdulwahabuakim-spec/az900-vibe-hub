@@ -6,7 +6,7 @@ Theme: Building smarter exam prep tools from own learning journey
 
 Live: [https://abdulwahabuakim-spec.github.io/az900-vibe-hub/] Video: [https://youtube.com/shorts/2Pw1DkgepuA?si=tQp5QITisXYsyC6k]
 
-Problem: In Arua 1GB=5k UGX, power cuts, Learn needs internet, no African examples.
+Problem: In Arua 1GB=2k UGX, power cuts, Learn needs internet, no African examples.
 Target: Muni + #1MillionDevs low-bandwidth learners, 2hrs/day.
 
 Solution 5-in-1:
